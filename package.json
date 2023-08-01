@@ -6,8 +6,13 @@
   "repository": "https://github.com/jumpoutbox/azaleya_blog_api.git",
   "author": "netoGermias <netogeremias019@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node-dev ./src/index.ts"
+  },
   "dependencies": {
-    "express": "^4.18.2"
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "http-status-codes": "^2.2.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
