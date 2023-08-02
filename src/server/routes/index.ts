@@ -16,7 +16,7 @@ router.get("/user", (req, res) => {
 
 /* User Router */
 
-router.post('/user', UserController.create);
+router.post('/user', UserController.createBodyValidator, UserController.create);
 
 /* * Router */
 
