@@ -1,40 +1,38 @@
 import { RequestHandler } from "express";
-import { StatusCodes } from "http-status-codes";
-import { Schema, ValidationError } from 'yup';
+import {StatusCodes} from 'http-status-codes';
+import { ValidationError, ObjectSchema, Maybe, AnyObject } from "yup";
 
-type TProperty = 'header' | 'body' | 'params' | 'query';
+type TProperty = 'body'|'header'|'params'|'query';
 
-type TGetSchemas = <T>(schema: Schema<T>) => Schema<T>;
+type TGetSchema = <T extends Maybe<AnyObject>>(schema: ObjectSchema<T>) => ObjectSchema<T>;
 
-type TALLSchemas = Record<TProperty, Schema<any>>;
+type TAllSchemas = Record<TProperty, ObjectSchema<any>>
 
-type TGetAllSchema = (getSchema: TGetSchemas) => Partial<TALLSchemas>
+type TGetAllSchemas = (getSchema: TGetSchema) => Partial<TAllSchemas>;
 
-type TValidation = (getAllSchemas: TGetAllSchema) => RequestHandler;
+type Tvalidation = (getAllSchemas: TGetAllSchemas) => RequestHandler
 
+export const validation: Tvalidation = (getAllSchemas) =>  async (req, res, next) => {
 
+    const schemas = getAllSchemas(schemas => schemas);
 
-export const Validation: TValidation = (getAllSchemas) => async (req, res, next) => {
-  const schemas = getAllSchemas(schemas => schemas)
+    const errorsResult: Record<string|TProperty, Record<string, string>> = {};
+    Object.entries(schemas).forEach(([key, schema])=>{
 
-  const errorsResults: Record<string|TProperty, Record<string, string>> = {};
+        try{
+            schema.validateSync(req[key as TProperty], {abortEarly: false});
+        } catch (error){
+            const yupError = error as ValidationError;
+            const errors: Record<string, string> = {};
+            
+            yupError.inner.forEach(error => {
+                if(!error.path) return;
+                errors[error.path] = error.message;
+            })
+            
+            errorsResult[key as TProperty] = errors;
+        }
+    });
 
-  Object.entries(schemas).forEach(([key, schema]) => {
-    try {
-      schema.validateSync(req[key as TProperty], { abortEarly: false })
-      return next();
-    } catch (error) {
-      const yupError = error as ValidationError;
-      const errors: Record<string, string> = {};
-
-      yupError.inner.forEach(error => {
-        if (error.path === undefined) return;
-        errors[error.path] = error.message;
-      })
-      errorsResults[key as TProperty] = errors;
-    }
-  })
-
-  if(Object.entries(errorsResults).length === 0){ return next()}else{return res.status(StatusCodes.BAD_REQUEST).json({ errorsResults })}
-
+    if(Object.entries(errorsResult).length == 0){ return next()}else{ return res.status(StatusCodes.BAD_REQUEST).json(errorsResult) }
 };
