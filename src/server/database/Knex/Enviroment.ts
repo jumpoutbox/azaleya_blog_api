@@ -41,6 +41,7 @@ export const development: Knex.Config = {
 
 export const test: Knex.Config = {
     client: 'sqlite3',
+    useNullAsDefault: true,
   connection:':memory',
 
 migrations: {

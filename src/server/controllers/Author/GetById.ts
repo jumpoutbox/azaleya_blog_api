@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import { StatusCodes } from "http-status-codes";
 import * as yup from 'yup';
 import { validation } from "../../shared/middleware";
+import { AuthorProvider } from "../../database/providers/Author";
 
 interface IParamProps {
   id: number,
@@ -14,7 +15,19 @@ export const getByIdValidation = validation((getSchema) => ({
 }));
 
 export const getById = async (req: Request<IParamProps>, res: Response) => {
+  
+  console.log(req.params.id)
+  if(!req.params.id){
+    return res.status(StatusCodes.BAD_REQUEST).json({ errors: { default: 'O parametro ID precisa ser informado'}});
+  }
 
+  const result = await AuthorProvider.getById(req.params.id);
+
+  if(result instanceof Error){
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: { default: result.message }})
+  }
   console.log(req.params);
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send("GetById Not are Implemented");
+  console.log(result)
+  return res.status(StatusCodes.OK).send(result);
+
 }

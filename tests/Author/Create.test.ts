@@ -6,10 +6,9 @@ describe("Author - Create", () => {
   it("criar um registro", async () => {
     const testeAuthorSave = await testServer.post('/author')
       .send({
-        firstname: "William",
-        lastname: "bragansa",
+        name: "William",
+        surname: "bragansa",
         email: "teste@test.com",
-        password: "novaObrigatorio",
         userId: 1
       })
 
@@ -20,10 +19,9 @@ describe("Author - Create", () => {
     it("Erro Firstname caracter maior que 6", async () => {
     const testeAuthorSave = await testServer.post('/author')
       .send({
-        firstname: "Wili",
-        lastname: "bragansa",
+        surname: "Wili",
+        name: "bragansa",
         email: "teste@test.com",
-        password: "novaObrigatorio",
         userId: 1
       })
 

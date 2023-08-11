@@ -6,10 +6,9 @@ describe("Author - Delete", () => {
   it("Apagar um registro", async () => {
     const testeAuthorSave = await testServer.post('/author')
       .send({
-        firstname: "William",
-        lastname: "bragansa",
+        name: "William",
+        surname: "bragansa",
         email: "teste@test.com",
-        password: "novaObrigatorio",
         userId: 1
       })
 

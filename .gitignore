@@ -5,6 +5,7 @@
 ./build
 ./trash
 ./coverage
+coverage/*.json
 
 trash
 yarn-error.log

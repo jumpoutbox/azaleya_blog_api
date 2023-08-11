@@ -6,10 +6,10 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema
   .createTable(ETableNames.author, table => {
     table.bigIncrements('id').primary().index();
-    table.string('name', 60).notNullable().index();
-    table.string('surname', 60).notNullable().index();
-    table.string('email', 130).notNullable().index();
-      
+    table.string('name', 60).checkLength('<=', 60).notNullable().index();
+    table.string('surname', 60).checkLength('<=', 60).notNullable().index();
+    table.string('email').notNullable().index();
+    table.integer('userId').notNullable(); 
     table.comment('Aqui tera uma relacao com o usuario')
     // userId: number,
   }).then(() => console.log(`# Created Table ${ETableNames.author}`))
