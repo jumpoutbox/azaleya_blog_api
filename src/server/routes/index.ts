@@ -1,10 +1,9 @@
 import { Router } from 'express';
 import { StatusCodes} from 'http-status-codes';
 import { AuthorController } from '../controllers';
-import { getById } from '../controllers/Author/GetById';
-import { updateById, updateByIdValidation } from '../controllers/Author/UpdateById';
-import { deleteById } from '../controllers/Author/DeleteById';
 import { CategoryController } from '../controllers/Category';
+import { CommentsController } from '../controllers/Comments';
+import { PostsController } from '../controllers/Posts';
 
 const router = Router();
 
@@ -34,6 +33,22 @@ router.get('/category', CategoryController.getAllValidation, CategoryController.
 router.post('/category', CategoryController.validationBody , CategoryController.create);
 router.put('/category/:id', CategoryController.updateByIdValidation, CategoryController.updateById);
 router.delete('/category/:id', CategoryController.deleteByIdValidation, CategoryController.deleteById);
+
+/* Comments Router */
+
+router.get('/commentary/:id', CommentsController.getById, CommentsController.getById);
+router.get('/commentary', CommentsController.getAllValidation, CommentsController.getAll);
+router.post('/commentary', CommentsController.validationBody , CommentsController.create);
+router.put('/commentary/:id', CommentsController.updateByIdValidation, CommentsController.updateById);
+router.delete('/commentary/:id', CommentsController.deleteByIdValidation, CommentsController.deleteById);
+
+/* Comments Router */
+
+router.get('/posts/:id', PostsController.getById, PostsController.getById);
+router.get('/posts', PostsController.getAllValidation, PostsController.getAll);
+router.post('/posts', PostsController.validationBody , PostsController.create);
+router.put('/posts/:id', PostsController.updateByIdValidation, PostsController.updateById);
+router.delete('/posts/:id', PostsController.deleteByIdValidation, PostsController.deleteById);
 
 
 /* * Router */

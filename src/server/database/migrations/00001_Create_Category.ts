@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema
   .createTable(ETableNames.category, table => {
     table.bigIncrements('id').primary().index();
-    table.string('name', 60).checkLength('<=', 60).notNullable().index();
+    table.string('name', 90).unique().checkLength('<=', 90).notNullable().index();
     
   }).then(() => console.log(`# Created Table ${ETableNames.category}`))
 }

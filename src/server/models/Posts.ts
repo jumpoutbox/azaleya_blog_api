@@ -3,9 +3,8 @@ export interface IPosts{
   id: number,
   title: string, 
   body: string, 
-  data: number, 
+  data: string,
+  author:number 
   category: number, 
-  Commentary: number,
-  like: number, 
-  img: number,
+  images: number,
 }

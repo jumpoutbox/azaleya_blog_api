@@ -4,6 +4,7 @@ export enum ETableNames {
   category = 'category',
   users = 'users',
   posts = 'posts',
+  like = "like",
   images = 'images',
   comments = 'comments',
 }
